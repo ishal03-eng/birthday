@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Palak 🎉</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Floating balloon animation */
+    @keyframes float {
+      0% { transform: translateY(100vh); }
+      100% { transform: translateY(-10vh); }
+    }
+    .balloon {
+      animation: float 8s linear infinite;
+    }
+    /* Confetti animation */
+    @keyframes confetti {
+      0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      background: hsl(var(--hue), 70%, 60%);
+      animation: confetti 4s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-pink-500 via-red-500 to-yellow-400 flex items-center justify-center min-h-screen relative overflow-hidden">
+
+  <!-- Confetti Container -->
+  <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
+
+  <!-- Countdown Section -->
+  <div id="countdown" class="text-center z-10 text-white">
+    <h1 class="text-4xl md:text-6xl font-bold mb-4">⏳ Countdown to Palak's Birthday</h1>
+    <p id="timer" class="text-3xl md:text-5xl font-mono"></p>
+  </div>
+
+  <!-- Birthday Wish Section (hidden initially) -->
+  <div id="wish" class="text-center z-10 hidden">
+    <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-lg animate-bounce">
+      🎉 Happy Birthday Palak 🎉
+    </h1>
+    <p class="mt-6 text-lg md:text-2xl text-white font-medium">
+      Wishing you a day filled with love, laughter, and endless joy 💖
+    </p>
+    <p class="mt-2 text-md md:text-lg text-white italic">
+      You are truly special, and today is all about you ✨
+    </p>
+  </div>
+
+  <!-- Balloons -->
+  <div class="absolute bottom-0 left-10 w-16 h-24 bg-pink-300 rounded-full balloon"></div>
+  <div class="absolute bottom-0 left-1/2 w-16 h-24 bg-yellow-300 rounded-full balloon" style="animation-delay: 2s;"></div>
+  <div class="absolute bottom-0 right-10 w-16 h-24 bg-blue-300 rounded-full balloon" style="animation-delay: 4s;"></div>
+
+  <script>
+    const confettiContainer = document.getElementById("confetti-container");
+    const countdownEl = document.getElementById("countdown");
+    const wishEl = document.getElementById("wish");
+    const timerEl = document.getElementById("timer");
+
+    // Generate Confetti
+    for (let i = 0; i < 50; i++) {
+      const piece = document.createElement("div");
+      piece.classList.add("confetti-piece");
+      piece.style.setProperty("--hue", Math.floor(Math.random() * 360));
+      piece.style.left = Math.random() * 100 + "vw";
+      piece.style.animationDelay = Math.random() * 2 + "s";
+      piece.style.animationDuration = 3 + Math.random() * 2 + "s";
+      confettiContainer.appendChild(piece);
+    }
+
+    // Target Date (Midnight 13 August)
+    const targetDate = new Date();
+    targetDate.setDate(13);
+    targetDate.setMonth(7); // August (0-indexed)
+    targetDate.setHours(0, 0, 0, 0);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        countdownEl.classList.add("hidden");
+        wishEl.classList.remove("hidden");
+      } else {
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        timerEl.textContent = `${hours}h ${minutes}m ${seconds}s`;
+      }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+
+</body>
+</html>
